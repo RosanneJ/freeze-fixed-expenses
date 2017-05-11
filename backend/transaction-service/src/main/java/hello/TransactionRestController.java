@@ -1,12 +1,10 @@
 package hello;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,13 +13,41 @@ public class TransactionRestController {
 
     @RequestMapping("/transactions")
     @ResponseBody
-    public List<Transaction> retrieveTransactions(@RequestParam(value = "name", defaultValue = "World") String name) {
+    public List<Transaction> retrieveTransactions() {
         List<Transaction> transactions = new ArrayList<>();
         transactions.add(Transaction.builder()//
             .id(654564L)//
-            .amount(new BigDecimal(4.25))//
-            .date(LocalDate.now())//
-            .incassantId("98753")//
+            .amount(4.25)//
+            .date(LocalDateTime.now())//
+            .comment("Broodje")//
+            .receiver("Brood & Co")//
+            .receiverIban("NL55INGB03055869544")//
+            .build());
+        transactions.add(Transaction.builder()//
+            .id(121212L)//
+            .amount(54.95)//
+            .date(LocalDateTime.now())//
+            .comment("Schoenen")//
+            .receiver("Van Haren")//
+            .receiverIban("NL12ABNA02016523223")//
+            .build());
+        transactions.add(Transaction.builder()//
+            .id(121212L)//
+            .amount(39.12)//
+            .date(LocalDateTime.of(2017, 4, 26, 12, 5))//
+            .comment("Aanslagnummer:00000000000000040219846Gecomb aanslag 2017 Amsterdam Restbedrag eur 234,75")//
+            .receiver("Gemeente Amsterdam Belastingen")//
+            .receiverIban("NL85INGB0004585329")//
+            .incassantId("NL89DBA343669660000")//
+            .build());
+        transactions.add(Transaction.builder()//
+            .id(121212L)//
+            .amount(82.25)//
+            .date(LocalDateTime.of(2017, 5, 18, 9, 0))//
+            .comment("Besured-FACTNR 70343558 DEB 2095141674-Zorgverzekering-")//
+            .receiver("CARESCO BV")//
+            .receiverIban("NL50ABNA0479966524")//
+            .incassantId("NL24ZZZ557727650000")//
             .build());
         return transactions;
     }

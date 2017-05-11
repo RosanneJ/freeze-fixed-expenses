@@ -1,7 +1,6 @@
 package hello;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -12,9 +11,11 @@ import lombok.Setter;
 @Setter
 public class Transaction {
     private long id;
-    private BigDecimal amount;
+    private double amount;
+    private String comment;
     private String receiver;
     private String receiverIban;
-    private LocalDate date;
+    private LocalDateTime date;
     private String incassantId;
+    private boolean frozen;
 }
