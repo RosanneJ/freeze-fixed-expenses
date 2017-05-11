@@ -1,15 +1,28 @@
 package hello;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 @RestController
 public class TransactionRestController {
+    private final FreezeTransactionService service;
+
+    @Autowired
+    public TransactionRestController(final FreezeTransactionService service) {
+        this.service = service;
+    }
+
+    @RequestMapping("/saldo")
+    public double retrieveSaldo() {
+        return 1405.26;
+    }
 
     @RequestMapping("/transactions")
     @ResponseBody
@@ -17,7 +30,7 @@ public class TransactionRestController {
         List<Transaction> transactions = new ArrayList<>();
         transactions.add(Transaction.builder()//
             .id(654564L)//
-            .amount(4.25)//
+            .amount(-4.25)//
             .date(LocalDateTime.now())//
             .comment("Broodje")//
             .receiver("Brood & Co")//
@@ -25,7 +38,7 @@ public class TransactionRestController {
             .build());
         transactions.add(Transaction.builder()//
             .id(121212L)//
-            .amount(54.95)//
+            .amount(-54.95)//
             .date(LocalDateTime.now())//
             .comment("Schoenen")//
             .receiver("Van Haren")//
@@ -33,7 +46,7 @@ public class TransactionRestController {
             .build());
         transactions.add(Transaction.builder()//
             .id(121212L)//
-            .amount(39.12)//
+            .amount(-39.12)//
             .date(LocalDateTime.of(2017, 4, 26, 12, 5))//
             .comment("Aanslagnummer:00000000000000040219846Gecomb aanslag 2017 Amsterdam Restbedrag eur 234,75")//
             .receiver("Gemeente Amsterdam Belastingen")//
@@ -42,7 +55,7 @@ public class TransactionRestController {
             .build());
         transactions.add(Transaction.builder()//
             .id(121212L)//
-            .amount(82.25)//
+            .amount(-82.25)//
             .date(LocalDateTime.of(2017, 5, 18, 9, 0))//
             .comment("Besured-FACTNR 70343558 DEB 2095141674-Zorgverzekering-")//
             .receiver("CARESCO BV")//
@@ -50,5 +63,13 @@ public class TransactionRestController {
             .incassantId("NL24ZZZ557727650000")//
             .build());
         return transactions;
+    }
+
+    @RequestMapping("/freeze-fixed-expenses")
+    public void freezeFixedExpenses(@RequestParam Transaction transactionToFreeze) {
+        if (transactionToFreeze.getIncassantId() == null) {
+            throw new IllegalArgumentException();
+        }
+        service.addTransaction(transactionToFreeze);
     }
 }
