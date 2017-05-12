@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:9000")
@@ -18,8 +19,8 @@ public class TransactionRestController {
     }
 
     @RequestMapping("/saldo")
-    public double retrieveSaldo() {
-        return 1405.26;
+    public List<Double> retrieveSaldo() {
+        return Collections.singletonList(1405.26);
     }
 
     @RequestMapping("/transactions")
